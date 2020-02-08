@@ -1,3 +1,54 @@
 .round-container {
-  
+  align-items: center;
+  padding: 30px;
+
+  .game-title {
+    font-family: 'Oswald', sans-serif;
+    margin-bottom: 20px;
+  }
+
+  .letters-container {
+    display: flex;
+    margin-top: 30px;
+
+    .letter {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100px;
+      height: 100px;
+      padding: 20px;
+      border: 5px solid lighten(black, 20%);
+      background-color: #6E82E2;
+      color: white;
+      font-family: 'Oswald', sans-serif;
+      font-size: 40px;
+
+      &:not(:last-child) {
+        margin-right: 10px;
+      }
+    }
+  }
+
+  .round-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 50px;
+    width: 800px;
+
+    .players-answered-container {
+      text-align: center;
+      font-family: 'Oswald', sans-serif;
+
+      h1 {
+        font-weight: 400;
+      }
+
+      p {
+        font-size: 40px;
+        font-family: 'Oswald', sans-serif;
+      }
+    }
+  }
 }

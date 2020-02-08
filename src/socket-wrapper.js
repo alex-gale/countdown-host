@@ -28,7 +28,7 @@ export const SocketProvider = ({ children }) => {
 	}
 
 	const addPlayer = (p) => {
-		const player = { id: p.player_id, username: p.player_username, score: 0 }
+		const player = { id: p.player_id, username: p.player_username, score: 0, current_answer: "" }
 
 		setPlayers(old_players => [...old_players, player])
 	}
@@ -44,6 +44,10 @@ export const SocketProvider = ({ children }) => {
 	const startRound = (letters) => {
 		setLetters(letters)
 		setGamestate("round")
+	}
+
+	const playerAnswer = (answer) => {
+		// let player = players.find(p => p.id === answer.player_id)
 	}
 
 	const connect = () => {
@@ -82,6 +86,9 @@ export const SocketProvider = ({ children }) => {
 					break
 				case "round_start":
 					startRound(data.letters)
+					break
+				case "player_answer":
+					playerAnswer(data)
 					break
 				default:
 					console.error("Invalid websocket message received")
