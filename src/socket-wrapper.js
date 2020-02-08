@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react'
 
-const WS_URL = "wss://api.countdown.versefor.me/ws"
+const WS_URL = "wss://api.countdown.codes/ws"
 
 export const SocketContext = React.createContext()
 export const useSocket = () => useContext(SocketContext)
@@ -11,9 +11,20 @@ export const SocketProvider = ({ children }) => {
 	const [players, setPlayers] = useState([])
 	const [letters, setLetters] = useState("")
 	const [gamestate, setGamestate] = useState("join_game")
+	const [error, setError] = useState("")
 
-	const handleError = (err) => {
+	const handleError = (err, webSoc) => {
+		setError(err.msg)
 
+		if (err.code.toString()[0] === "1") {
+			// treated as player, meaning there is already a host
+			setError("Game already in progress")
+			return webSoc.close()
+		}
+
+		switch (err.code) {
+			//case
+		}
 	}
 
 	const addPlayer = (p) => {
@@ -36,6 +47,8 @@ export const SocketProvider = ({ children }) => {
 	}
 
 	const connect = () => {
+		setError("")
+
 		if (ws) {
 			return false
 		}
@@ -52,9 +65,13 @@ export const SocketProvider = ({ children }) => {
 
 			switch (type) {
 				case "error":
-					handleError(data)
+					handleError(data, webSoc)
 					break
 				case "game_data":
+					if (data.user_type === "player") {
+						setError("Game already in progress")
+					}
+
 					setGameCode(data.game_code)
 					break
 				case "player_join":
@@ -67,11 +84,15 @@ export const SocketProvider = ({ children }) => {
 					startRound(data.letters)
 					break
 				default:
-					console.error("help")
+					console.error("Invalid websocket message received")
 			}
 		}
 
 		webSoc.onclose = () => {
+			setWS(null)
+			setGamestate("join_game")
+			setPlayers([])
+			setLetters("")
 			setGameCode("")
 		}
 	}
@@ -84,7 +105,8 @@ export const SocketProvider = ({ children }) => {
 				players,
 				startGame,
 				letters,
-				gamestate
+				gamestate,
+				error
 			}}
 		>
       {children}

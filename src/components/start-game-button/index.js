@@ -28,7 +28,7 @@ class StartGameButton extends React.Component {
 						? <Button onClick={this.onClick}>Start Game</Button>
 						: <React.Fragment>
 								<div className="code-display">{this.props.gameCode}</div>
-								<div className={`url-display ${this.state.slide ? 'display': null}`}>countdown.versefor.me</div>
+								<div className={`url-display ${this.state.slide ? 'display': null}`}>Join at <span className="underline">countdown.codes</span></div>
 							</React.Fragment>
 				}
 			</div>

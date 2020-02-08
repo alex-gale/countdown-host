@@ -11,9 +11,21 @@
     font-family: 'Open Sans', sans-serif;
 }
 
+.underline { text-decoration: underline;}
+
+.container {
+  height: 100vh;
+  width: 100vw;
+  transition: background 0.25s;
+  z-index: -1000;
+
+  &.waiting { background: #6EE294; }
+  &.round { background: whitesmoke; }
+}
+
 .page-container {
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100vh;
+  height: 100%;
 }

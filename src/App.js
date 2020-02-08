@@ -11,14 +11,14 @@ const App = () => {
   switch (gamestate) {
 		case "join_game":
 			return (
-				<div className="container">
+				<div className="container waiting">
 					<Start />
 				</div>
 			)
 
 		case "round":
 			return (
-				<div className="container">
+				<div className="container round">
 					<Round />
 				</div>
 			)
