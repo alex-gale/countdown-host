@@ -64,6 +64,12 @@ class Clock extends React.PureComponent {
 			ctx.stroke()
 		}
 
+		// outer central circle
+		ctx.beginPath()
+		ctx.fillStyle = "#333333"
+		ctx.arc(mid, mid, radius * 0.1, 0, 2 * pi)
+		ctx.fill()
+
 		// hand
 		ctx.beginPath()
 		ctx.fillStyle = "darkblue"
@@ -84,14 +90,11 @@ class Clock extends React.PureComponent {
 		ctx.stroke()
 		ctx.fill()
 
-		// central circle
+		// inner central circle
 		ctx.beginPath()
 		ctx.fillStyle = "darkblue"
-		ctx.strokeStyle = "#333333"
-		ctx.lineWidth = 4
-		ctx.arc(mid, mid, radius * 0.1, 0, 2 * pi)
+		ctx.arc(mid, mid, radius * 0.09, 0, 2 * pi)
 		ctx.fill()
-		ctx.stroke()
 	}
 
 	render() {

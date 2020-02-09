@@ -24,12 +24,16 @@ class Start extends React.Component {
 					onClick={() => this.context.connect()}
 					gameCode={this.context.gameCode}
 					players={this.context.players}
+					disabled={this.context.loading}
 				/>
 
-				<div className="player-container">
-					<h2>Players</h2>
-					{this.context.players.map(player => <p className="player" key={player.id}>{player.username}</p>)}
-				</div>
+				{
+					this.context.gameCode &&
+					<div className="player-container">
+						<h2>Players</h2>
+						{this.context.players.map(player => <p className="player" key={player.id}>{player.username}</p>)}
+					</div>
+				}
 
 				<div className="begin-button-container">
 					{

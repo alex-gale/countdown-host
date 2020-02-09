@@ -4,6 +4,7 @@ import './index.scss'
 import { SocketContext } from './socket-wrapper'
 import Start from './containers/start'
 import Round from './containers/round'
+import FinalCountdown from './containers/final-countdown'
 
 const App = () => {
 	const { gamestate } = useContext(SocketContext)
@@ -20,6 +21,13 @@ const App = () => {
 			return (
 				<div className="container round">
 					<Round />
+				</div>
+			)
+
+		case "final_countdown":
+			return (
+				<div className="container final-countdown">
+					<FinalCountdown />
 				</div>
 			)
 

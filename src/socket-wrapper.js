@@ -9,9 +9,11 @@ export const SocketProvider = ({ children }) => {
 	const [gameCode, setGameCode] = useState("")
 	const [ws, setWS] = useState()
 	const [players, setPlayers] = useState([])
+	const [answers, setAnswers] = useState([])
 	const [letters, setLetters] = useState("")
 	const [gamestate, setGamestate] = useState("join_game")
 	const [error, setError] = useState("")
+	const [loading, setLoading] = useState(false)
 
 	const handleError = (err, webSoc) => {
 		setError(err.msg)
@@ -46,12 +48,20 @@ export const SocketProvider = ({ children }) => {
 		setGamestate("round")
 	}
 
+	const endRound = () => {
+		console.log(ws)
+		ws.send(JSON.stringify({ type: "round_end" }))
+	}
+
 	const playerAnswer = (answer) => {
-		// let player = players.find(p => p.id === answer.player_id)
+		let answer_data = [answer.player_id, answer.answer]
+
+		setAnswers(old_answers => [...old_answers, answer_data])
 	}
 
 	const connect = () => {
 		setError("")
+		setLoading(true)
 
 		if (ws) {
 			return false
@@ -61,6 +71,7 @@ export const SocketProvider = ({ children }) => {
 
 		webSoc.onopen = () => {
 			setWS(webSoc)
+			setLoading(false)
 		}
 
 		webSoc.onmessage = (event) => {
@@ -86,6 +97,9 @@ export const SocketProvider = ({ children }) => {
 					break
 				case "round_start":
 					startRound(data.letters)
+					break
+				case "round_end":
+					setGamestate("round_over")
 					break
 				case "player_answer":
 					playerAnswer(data)
@@ -113,7 +127,11 @@ export const SocketProvider = ({ children }) => {
 				startGame,
 				letters,
 				gamestate,
-				error
+				setGamestate,
+				error,
+				loading,
+				answers,
+				endRound
 			}}
 		>
       {children}

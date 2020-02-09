@@ -19,6 +19,7 @@ class Round extends React.Component {
 
 		this.startClock = this.startClock.bind(this)
 		this.tickClock = this.tickClock.bind(this)
+		this.stopClock = this.stopClock.bind(this)
 	}
 
 	componentDidMount() {
@@ -32,7 +33,16 @@ class Round extends React.Component {
 	tickClock() {
 		if (this.state.clockSecs <= 30) {
 			this.setState({ clockSecs: this.state.clockSecs + 0.05 })
+		} else {
+			this.stopClock()
 		}
+	}
+
+	stopClock() {
+		clearInterval(this.state.clockInterval)
+		this.setState({ clockInterval: null })
+
+		this.context.setGamestate("final_countdown")
 	}
 
 	render() {
@@ -47,7 +57,7 @@ class Round extends React.Component {
 					<Clock seconds={this.state.clockSecs} />
 					<div className="players-answered-container">
 						<h1>Players Answered:</h1>
-						<p>0</p>
+						<p>{this.context.answers.length}</p>
 					</div>
 				</div>
 			</div>

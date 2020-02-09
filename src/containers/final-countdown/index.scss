@@ -1,0 +1,25 @@
+.final-countdown-container {
+  align-items: center;
+  padding: 30px;
+
+  h2 {
+    margin-top: 20px;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 400;
+  }
+
+  .canvas-container {
+    margin-top: 40px;
+    position: relative;
+
+    p {
+      position: absolute;
+      top: 48%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Oswald', sans-serif;
+      font-size: 40px;
+      color: white;
+    }
+  }
+}
