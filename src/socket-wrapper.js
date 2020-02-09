@@ -25,7 +25,7 @@ export const SocketProvider = ({ children }) => {
 		}
 
 		switch (err.code) {
-			//case
+			
 		}
 	}
 
@@ -49,7 +49,6 @@ export const SocketProvider = ({ children }) => {
 	}
 
 	const endRound = () => {
-		console.log(ws)
 		ws.send(JSON.stringify({ type: "round_end" }))
 	}
 
@@ -100,12 +99,13 @@ export const SocketProvider = ({ children }) => {
 					break
 				case "round_end":
 					setGamestate("round_over")
+					setLetters("")
 					break
 				case "player_answer":
 					playerAnswer(data)
 					break
 				default:
-					console.error("Invalid websocket message received")
+					console.error(`Invalid websocket message received - ${type}`)
 			}
 		}
 

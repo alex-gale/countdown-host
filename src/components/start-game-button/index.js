@@ -34,6 +34,8 @@ class StartGameButton extends React.Component {
 								<div className={`url-display ${this.state.slide ? 'display': null}`}>Join at <span className="underline">countdown.codes</span></div>
 							</React.Fragment>
 				}
+
+				<span className={`error-message ${this.props.error && "display"}`}>{this.props.error}</span>
 			</div>
 		)
 	}
@@ -42,11 +44,13 @@ class StartGameButton extends React.Component {
 StartGameButton.propTypes = {
 	onClick: PropTypes.func.isRequired,
 	gameCode: PropTypes.string,
-	disabled: PropTypes.bool.isRequired
+	disabled: PropTypes.bool.isRequired,
+	error: PropTypes.string
 }
 
 StartGameButton.defaultProps = {
-	gameCode: ""
+	gameCode: "",
+	error: ""
 }
 
 export default StartGameButton

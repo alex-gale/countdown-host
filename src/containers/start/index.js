@@ -23,8 +23,8 @@ class Start extends React.Component {
         <StartGameButton
 					onClick={() => this.context.connect()}
 					gameCode={this.context.gameCode}
-					players={this.context.players}
 					disabled={this.context.loading}
+					error={this.context.error}
 				/>
 
 				{

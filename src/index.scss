@@ -21,7 +21,8 @@
 
   &.waiting { background: #6EE294; }
   &.round { background: whitesmoke; }
-  &.final-countdown { background: #6E82E2 }
+  &.final-countdown, &.round-over { background: #6E82E2 }
+  &.round-results { background: #CE6EE2 }
 }
 
 .page-container {

@@ -26,6 +26,10 @@ class Round extends React.Component {
 		this.startClock()
 	}
 
+	componentWillUnmount() {
+		this.stopClock()
+	}
+
 	startClock() {
 		this.setState({ clockInterval: setInterval(this.tickClock, 50) })
 	}
@@ -42,7 +46,9 @@ class Round extends React.Component {
 		clearInterval(this.state.clockInterval)
 		this.setState({ clockInterval: null })
 
-		this.context.setGamestate("final_countdown")
+		if (this.context.players.length !== 0) {
+			this.context.setGamestate("final_countdown")
+		}
 	}
 
 	render() {
