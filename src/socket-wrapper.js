@@ -8,13 +8,10 @@ export const useSocket = () => useContext(SocketContext)
 export const SocketProvider = ({ children }) => {
 	const [gameCode, setGameCode] = useState("")
 	const [ws, setWS] = useState()
-	const [players, setPlayers] = useState([
-		{id: 1, username: "player1", score: 0, current_answer: "lamb"},
-		{id: 2, username: "player2", score: 0, current_answer: "lambda"},
-	])
+	const [players, setPlayers] = useState([])
 	const [answerCount, setAnswerCount] = useState(0)
 	const [letters, setLetters] = useState("")
-	const [gamestate, setGamestate] = useState("round_results")
+	const [gamestate, setGamestate] = useState("join_game")
 	const [error, setError] = useState("")
 	const [loading, setLoading] = useState(false)
 
@@ -33,7 +30,14 @@ export const SocketProvider = ({ children }) => {
 	}
 
 	const addPlayer = (p) => {
-		const player = { id: p.player_id, username: p.player_username, score: 0, current_answer: "" }
+		const player = {
+			id: p.player_id,
+			username: p.player_username,
+			score: 0,
+			current_answer: "",
+			current_answer_valid: false,
+			current_answer_best: false
+		}
 
 		setPlayers(old_players => [...old_players, player])
 	}
@@ -44,16 +48,46 @@ export const SocketProvider = ({ children }) => {
 
 	const startGame = () => {
 		ws.send(JSON.stringify({ type: "game_start" }))
+		setLoading(true)
 	}
 
 	const nextRound = () => {
 		ws.send(JSON.stringify({ type: "round_start" }))
+		setLoading(true)
 	}
 
 	const startRound = (letters) => {
 		setLetters(letters)
 		setGamestate("round")
 		setAnswerCount(0)
+	}
+
+	const processResults = (results) => {
+		let best_answers = []
+
+		// find best answers
+		Object.values(results.valid_answers).forEach(answer => {
+			if (best_answers.length === 0 || answer.length === best_answers[0].length) {
+				best_answers.push(answer)
+			}
+			if (answer.length > best_answers[0].length) {
+				best_answers = [answer]
+			}
+		})
+
+		setPlayers(players => {
+			players.forEach(player => {
+				player.current_answer_valid = Object.keys(results.valid_answers).indexOf(player.id) > -1
+				if (best_answers.indexOf(player.current_answer) > -1) {
+					player.current_answer_best = true
+					player.score += player.current_answer.length
+				} else {
+					player.current_answer_best = false
+				}
+			})
+
+			return players
+		})
 	}
 
 	const endRound = () => {
@@ -90,6 +124,8 @@ export const SocketProvider = ({ children }) => {
 			const message = JSON.parse(event.data)
 			const { type, data } = message
 
+			setLoading(false)
+
 			switch (type) {
 				case "error":
 					handleError(data, webSoc)
@@ -118,10 +154,16 @@ export const SocketProvider = ({ children }) => {
 					setLetters("")
 					break
 				case "round_results":
+					processResults(data)
 					break
 				default:
 					console.error(`Invalid websocket message received - ${type}`)
 			}
+		}
+
+		webSoc.onerror = (e) => {
+			setError("Unable to connect to the game server")
+			setLoading(false)
 		}
 
 		webSoc.onclose = () => {

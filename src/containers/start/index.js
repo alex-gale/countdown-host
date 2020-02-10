@@ -38,7 +38,9 @@ class Start extends React.Component {
 				<div className="begin-button-container">
 					{
 						this.context.players.length > 0
-							? <Button onClick={() => this.context.startGame()}>Begin</Button>
+							? <Button onClick={() => this.context.startGame()} disabled={this.context.loading}>
+									{this.context.loading ? "Loading..." : "Begin"}
+								</Button>
 							: null
 					}
 				</div>

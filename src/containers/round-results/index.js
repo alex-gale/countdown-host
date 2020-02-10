@@ -7,15 +7,23 @@ import Button from '../../components/button'
 class RoundResults extends React.Component {
 	static contextType = SocketContext
 
+	constructor(props) {
+		super(props)
+
+		this.state = {
+			pointsChangeDisplay: false
+		}
+	}
+
+	componentDidMount() {
+		setTimeout(() => this.setState({ pointsChangeDisplay: true }), 200)
+	}
+
 	render() {
 		const players = [...this.context.players]
 		const sortedPlayers = players.sort((a, b) => {
-			if (a.current_answer.length < b.current_answer.length) {
-				return 1
-			}
-			if (a.current_answer.length > b.current_answer.length) {
-				return -1
-			}
+			if (a.score < b.score) return 1
+			if (a.score > b.score) return -1
 			return 0
 		})
 
@@ -29,8 +37,12 @@ class RoundResults extends React.Component {
 						{
 							sortedPlayers.map(player => (
 								<div className="player-result" key={player.id}>
-									<p>{player.username}</p>
-									<p>{player.current_answer}</p>
+									<p className={`player-username ${player.current_answer ? null : 'greyed'}`}>{player.username}</p>
+									<p className={`player-answer ${player.current_answer_valid ? null : 'strike'}`}>{player.current_answer}</p>
+									<p className="player-score">{player.score}</p>
+									<p className={`player-points-change ${this.state.pointsChangeDisplay ? 'display' : null}`}>
+										{player.current_answer_best ? `+${player.current_answer.length}` : null}
+									</p>
 								</div>
 							))
 						}
@@ -45,7 +57,9 @@ class RoundResults extends React.Component {
 				</div>
 
 				<div className="next-round-container">
-					<Button onClick={() => this.context.nextRound()}>Next Round</Button>
+					<Button onClick={() => this.context.nextRound()} disabled={this.context.loading}>
+						{this.context.loading ? "Loading..." : "Next Round"}
+					</Button>
 				</div>
 			</div>
 		)

@@ -19,10 +19,62 @@
     }
 
     .player-words {
-      flex-direction: column;
-
       .player-result {
-        display: flex;
+        display: grid;
+        grid-template-columns: 300px 20px 170px 50px 50px;
+        margin-top: 10px;
+        font-size: 25px;
+
+        &:after {
+          content: '';
+          width: 190%;
+          height: 2px;
+          background: rgba(0, 0, 0, 0.3)
+        }
+
+        * {
+          font-family: 'Oswald', sans-serif;
+        }
+
+        &:nth-child(2) {
+          margin-top: 20px;
+        }
+
+        .player-username {
+          font-weight: bold;
+          overflow: hidden;
+          white-space: nowrap;
+          grid-column: 1;
+
+          &.greyed {
+            color: rgba(0, 0, 0, 0.5)
+          }
+        }
+
+        .player-answer {
+          grid-column: 3;
+
+          &.strike {
+            text-decoration: line-through;
+          }
+        }
+
+        .player-score {
+          grid-column: 4;
+        }
+
+        .player-points-change {
+          color: rgba(0, 0, 0, 0.3);
+          margin-left: -50px;
+          opacity: 0;
+          transition: all 1s ease;
+          grid-column: 5;
+
+          &.display {
+            opacity: 1;
+            margin-left: 0px;
+          }
+        }
       }
     }
   }
