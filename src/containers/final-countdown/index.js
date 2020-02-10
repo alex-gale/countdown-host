@@ -24,6 +24,10 @@ class FinalCountdown extends React.Component {
     this.startCountdown()
   }
 
+  componentWillUnmount() {
+    this.stopCountdown()
+  }
+
   startCountdown() {
     this.setState({ countdownInterval: setInterval(this.tickCountdown, 50) })
   }
@@ -41,7 +45,9 @@ class FinalCountdown extends React.Component {
     clearInterval(this.state.countdownInterval)
     this.setState({ countdownInterval: null })
 
-    this.context.endRound()
+    if (this.state.countdownSecs >= 5) {
+      this.context.endRound()
+    }
   }
 
   drawCountdown(seconds) {

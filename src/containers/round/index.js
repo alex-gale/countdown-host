@@ -46,7 +46,7 @@ class Round extends React.Component {
 		clearInterval(this.state.clockInterval)
 		this.setState({ clockInterval: null })
 
-		if (this.context.players.length !== 0) {
+		if (this.state.clockSecs >= 30) {
 			this.context.setGamestate("final_countdown")
 		}
 	}
