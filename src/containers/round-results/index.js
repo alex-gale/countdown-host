@@ -1,4 +1,5 @@
 import React from 'react'
+import shortid from 'shortid'
 
 import './index.scss'
 import { SocketContext } from '../../socket-wrapper'
@@ -49,14 +50,18 @@ class RoundResults extends React.Component {
 					</div>
 
 					<div className="best-words">
-						<h2>Best Words:</h2>
-						<div className="word">
-							lambacopter
+						<div className="letters-container">
+							{this.context.letters.split("").map(letter => <div className="letter" key={shortid.generate()}>{letter}</div>)}
+						</div>
+
+						<div className="words-container">
+							{this.context.bestWords.map(word => <p key={shortid.generate()}>{word}</p>)}
 						</div>
 					</div>
 				</div>
 
 				<div className="next-round-container">
+					<span className={`error-message ${this.context.error && "display"}`}>{this.context.error}</span>
 					<Button onClick={() => this.context.nextRound()} disabled={this.context.loading}>
 						{this.context.loading ? "Loading..." : "Next Round"}
 					</Button>

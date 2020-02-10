@@ -14,6 +14,7 @@ export const SocketProvider = ({ children }) => {
 	const [gamestate, setGamestate] = useState("join_game")
 	const [error, setError] = useState("")
 	const [loading, setLoading] = useState(false)
+	const [bestWords, setBestWords] = useState([])
 
 	const handleError = (err, webSoc) => {
 		setError(err.msg)
@@ -49,11 +50,13 @@ export const SocketProvider = ({ children }) => {
 	const startGame = () => {
 		ws.send(JSON.stringify({ type: "game_start" }))
 		setLoading(true)
+		setError("")
 	}
 
 	const nextRound = () => {
 		ws.send(JSON.stringify({ type: "round_start" }))
 		setLoading(true)
+		setError("")
 	}
 
 	const startRound = (letters) => {
@@ -63,6 +66,8 @@ export const SocketProvider = ({ children }) => {
 	}
 
 	const processResults = (results) => {
+		setBestWords(results.best_words)
+
 		let best_answers = []
 
 		// find best answers
@@ -151,7 +156,6 @@ export const SocketProvider = ({ children }) => {
 					break
 				case "round_end":
 					setGamestate("round_over")
-					setLetters("")
 					break
 				case "round_results":
 					processResults(data)
@@ -189,7 +193,8 @@ export const SocketProvider = ({ children }) => {
 				loading,
 				answerCount,
 				endRound,
-				nextRound
+				nextRound,
+				bestWords
 			}}
 		>
       {children}

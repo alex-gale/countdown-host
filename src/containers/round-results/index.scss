@@ -10,6 +10,7 @@
     display: flex;
     justify-content: space-between;
     width: 100%;
+    height: 100%;
 
     .player-words, .best-words {
       display: flex;
@@ -77,6 +78,45 @@
         }
       }
     }
+
+    .best-words {
+      text-align: center;
+
+      .letters-container {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+
+        .letter {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 75px;
+          height: 75px;
+          padding: 20px;
+          border: 5px solid lighten(black, 20%);
+          background-color: #6E82E2;
+          color: white;
+          font-family: 'Oswald', sans-serif;
+          font-size: 20px;
+
+          @media only screen and (max-width: 1470px) {
+            font-size: 15px;
+            width: 50px;
+            height: 50px;
+          }
+        }
+      }
+
+      p {
+        font-family: 'Oswald', sans-serif;
+        font-size: 25px;
+
+        &:first-child {
+          margin-top: 30px;
+        }
+      }
+    }
   }
 
   .next-round-container {
@@ -88,6 +128,20 @@
       bottom: 0;
       margin-bottom: 30px;
       font-size: 25px;
+      z-index: 2;
+    }
+
+    .error-message {
+      position: absolute;
+      bottom: 0;
+      margin-bottom: 60px;
+      opacity: 0;
+
+      &.display {
+        transition: margin-bottom 0.5s ease;
+        margin-bottom: 90px;
+        opacity: 1
+      }
     }
   }
 }
