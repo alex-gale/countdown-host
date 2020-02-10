@@ -8,10 +8,13 @@ export const useSocket = () => useContext(SocketContext)
 export const SocketProvider = ({ children }) => {
 	const [gameCode, setGameCode] = useState("")
 	const [ws, setWS] = useState()
-	const [players, setPlayers] = useState([])
-	const [answers, setAnswers] = useState([])
+	const [players, setPlayers] = useState([
+		{id: 1, username: "player1", score: 0, current_answer: "lamb"},
+		{id: 2, username: "player2", score: 0, current_answer: "lambda"},
+	])
+	const [answerCount, setAnswerCount] = useState(0)
 	const [letters, setLetters] = useState("")
-	const [gamestate, setGamestate] = useState("join_game")
+	const [gamestate, setGamestate] = useState("round_results")
 	const [error, setError] = useState("")
 	const [loading, setLoading] = useState(false)
 
@@ -25,7 +28,7 @@ export const SocketProvider = ({ children }) => {
 		}
 
 		switch (err.code) {
-			
+
 		}
 	}
 
@@ -43,9 +46,14 @@ export const SocketProvider = ({ children }) => {
 		ws.send(JSON.stringify({ type: "game_start" }))
 	}
 
+	const nextRound = () => {
+		ws.send(JSON.stringify({ type: "round_start" }))
+	}
+
 	const startRound = (letters) => {
 		setLetters(letters)
 		setGamestate("round")
+		setAnswerCount(0)
 	}
 
 	const endRound = () => {
@@ -53,9 +61,14 @@ export const SocketProvider = ({ children }) => {
 	}
 
 	const playerAnswer = (answer) => {
-		let answer_data = [answer.player_id, answer.answer]
+		setAnswerCount(old_count => old_count + 1)
 
-		setAnswers(old_answers => [...old_answers, answer_data])
+		setPlayers(players => {
+			let player = players.find(p => p.id === answer.player_id)
+			player.current_answer = answer.answer
+
+			return players
+		})
 	}
 
 	const connect = () => {
@@ -97,12 +110,14 @@ export const SocketProvider = ({ children }) => {
 				case "round_start":
 					startRound(data.letters)
 					break
+				case "player_answer":
+					playerAnswer(data)
+					break
 				case "round_end":
 					setGamestate("round_over")
 					setLetters("")
 					break
-				case "player_answer":
-					playerAnswer(data)
+				case "round_results":
 					break
 				default:
 					console.error(`Invalid websocket message received - ${type}`)
@@ -130,8 +145,9 @@ export const SocketProvider = ({ children }) => {
 				setGamestate,
 				error,
 				loading,
-				answers,
-				endRound
+				answerCount,
+				endRound,
+				nextRound
 			}}
 		>
       {children}

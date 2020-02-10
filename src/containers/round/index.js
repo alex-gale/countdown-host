@@ -63,7 +63,7 @@ class Round extends React.Component {
 					<Clock seconds={this.state.clockSecs} />
 					<div className="players-answered-container">
 						<h1>Players Answered:</h1>
-						<p>{this.context.answers.length}</p>
+						<p>{this.context.answerCount}</p>
 					</div>
 				</div>
 			</div>
