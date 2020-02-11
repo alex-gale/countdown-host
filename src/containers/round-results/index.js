@@ -66,6 +66,10 @@ class RoundResults extends React.Component {
 						{this.context.loading ? "Loading..." : "Next Round"}
 					</Button>
 				</div>
+
+				<div className="game-code-container">
+					{this.context.gameCode}
+				</div>
 			</div>
 		)
 	}

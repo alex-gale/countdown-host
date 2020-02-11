@@ -46,6 +46,7 @@ class FinalCountdown extends React.Component {
     this.setState({ countdownInterval: null })
 
     if (this.state.countdownSecs >= 5) {
+      this.setState({ countdownSecs: 0 })
       this.context.endRound()
     }
   }

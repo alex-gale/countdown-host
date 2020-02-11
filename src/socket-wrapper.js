@@ -63,6 +63,13 @@ export const SocketProvider = ({ children }) => {
 		setLetters(letters)
 		setGamestate("round")
 		setAnswerCount(0)
+		setPlayers(players => {
+			players.forEach(player => {
+				player.current_answer = ""
+			})
+
+			return players
+		})
 	}
 
 	const processResults = (results) => {
