@@ -77,6 +77,10 @@ class FinalCountdown extends React.Component {
           <canvas ref="canvas" width={150} height={150} />
           <p>{5 - Math.floor(this.state.countdownSecs)}</p>
         </div>
+
+				<div className="players-answered-container">
+					<h1>Players Answered: {this.context.answerCount}</h1>
+				</div>
       </div>
     )
   }
