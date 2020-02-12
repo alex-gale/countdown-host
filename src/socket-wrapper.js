@@ -19,12 +19,6 @@ export const SocketProvider = ({ children }) => {
 	const handleError = (err, webSoc) => {
 		setError(err.msg)
 
-		if (err.code.toString()[0] === "1") {
-			// treated as player, meaning there is already a host
-			setError("Game already in progress")
-			return webSoc.close()
-		}
-
 		switch (err.code) {
 
 		}
@@ -125,7 +119,7 @@ export const SocketProvider = ({ children }) => {
 			return false
 		}
 
-		const webSoc = new WebSocket(WS_URL)
+		const webSoc = new WebSocket(`${WS_URL}?type=host`)
 
 		webSoc.onopen = () => {
 			setWS(webSoc)
