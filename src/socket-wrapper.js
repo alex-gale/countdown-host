@@ -137,10 +137,6 @@ export const SocketProvider = ({ children }) => {
 					handleError(data, webSoc)
 					break
 				case "game_data":
-					if (data.user_type === "player") {
-						setError("Game already in progress")
-					}
-
 					setGameCode(data.game_code)
 					break
 				case "player_join":
