@@ -28,7 +28,7 @@ export const SocketProvider = ({ children }) => {
 		const player = {
 			id: p.player_id,
 			username: p.player_username,
-			score: 0,
+			score: p.player_score,
 			current_answer: "",
 			current_answer_valid: false,
 			current_answer_best: false
