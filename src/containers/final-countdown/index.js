@@ -69,7 +69,7 @@ class FinalCountdown extends React.Component {
   render() {
     return (
       <div className="page-container final-countdown-container">
-        <h1 className="game-title"><span role="img" aria-label="clock">🕧</span> Countdown Online</h1>
+        <h1 className="game-title"><span role="img" aria-label="clock">🕑</span> Countdown Online</h1>
 
         <h2>Enter your answers!</h2>
 

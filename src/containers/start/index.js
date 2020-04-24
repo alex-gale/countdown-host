@@ -19,7 +19,7 @@ class Start extends React.Component {
   render() {
     return (
       <div className="page-container start-container">
-				<h1 className="game-title"><span role="img" aria-label="clock">🕧</span> Countdown Online</h1>
+				<h1 className="game-title"><span role="img" aria-label="clock">🕑</span> Countdown Online</h1>
         <StartGameButton
 					onClick={() => this.context.connect()}
 					gameCode={this.context.gameCode}
